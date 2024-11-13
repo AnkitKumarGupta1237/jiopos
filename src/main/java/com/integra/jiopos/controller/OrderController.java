@@ -1,23 +1,19 @@
 package com.integra.jiopos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
 	
-	private final PickedOrderDetails orderDetails = new PickedOrderDetails(
-            "124050010268986",
-            "22-10-2024 21:45:03",
-            "COMPLETE",
-            null,
-            "TATACLIQ"
-    );
-
+	  @Autowired
+      PickedOrderDetails orderDetails;
     private final PaymentDetails paymentDetails = new PaymentDetails(
             "47024718",
             "TataCliq",
@@ -29,17 +25,17 @@ public class OrderController {
     @PostMapping("/details")
     public ResponseEntity<OrderResponse> getOrderDetails(@RequestBody OrderRequest request) {
     	System.out.println(request.getOrderId());
-//        if ("124050010268986".equals(request.getOrderId())) {
             OrderResponse response = new OrderResponse();
+            orderDetails.setORDER_NO(request.getOrderId());
+            orderDetails.setORDER_DATE(new Date());
+            orderDetails.setORDER_STATUS("COMPLETE");
+            orderDetails.setORDER_STATUS_DATE(null);
+            orderDetails.setSOURCE("TATACLIQ");
             response.setPICKED_ORDER_DETAILS(orderDetails);
             response.setPAYMENT_DETAILS(Collections.singletonList(paymentDetails));
             response.setDEVICE_DETAILS(null);  // Null for device details
             response.setErrorcode("00");
             response.setErrormsg("SUCCESS");
-
             return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
     }
 }
