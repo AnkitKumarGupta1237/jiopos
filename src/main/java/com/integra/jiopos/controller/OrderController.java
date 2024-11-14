@@ -28,7 +28,7 @@ public class OrderController {
             OrderResponse response = new OrderResponse();
             orderDetails.setORDER_NO(request.getOrderId());
             orderDetails.setORDER_DATE(new Date());
-            orderDetails.setORDER_STATUS("COMPLETE");
+            orderDetails.setORDER_STATUS("DELIVERED");
             orderDetails.setORDER_STATUS_DATE(null);
             orderDetails.setSOURCE("TATACLIQ");
             response.setPICKED_ORDER_DETAILS(orderDetails);
